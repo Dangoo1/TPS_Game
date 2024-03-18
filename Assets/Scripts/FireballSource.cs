@@ -7,11 +7,9 @@ public class FireballSource : MonoBehaviour
     public Transform targetPoint;
     public Camera cameraLink;
     public float targetInSkyDistance;
-
-    private void Start()
+    void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        
     }
 
     

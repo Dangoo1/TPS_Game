@@ -7,13 +7,18 @@ public class EnemyAI : MonoBehaviour
 
 {
     public List<Transform> patrolPoints;
+
     public PlayerController player;
+
     public float viewAngle;
+
     private NavMeshAgent _navMeshAgent;
+
     private bool _IsPlayerNoticed;
-    public float damage = 30;
-    private PlayerHealth _playerHealth;
-   
+
+
+
+    // Start is called before the first frame update
     private void Start()
     {
         InitComponentLinks();
@@ -23,27 +28,17 @@ public class EnemyAI : MonoBehaviour
     private void InitComponentLinks()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        _playerHealth = player.GetComponent<PlayerHealth>();
     }
+
     private void Update()
     {
         NoticedPlayerUpdate();
         ChaseUpdate();
         PatrolUpdate();
-        AttackUpdate();
-    }
-    private void AttackUpdate()
-    {
-       if(_IsPlayerNoticed)
-       {
-          if(_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
-          {
-                _playerHealth.DealDamage(damage * Time.deltaTime);
-          }
-       }
     }
     private void NoticedPlayerUpdate()
     {
+
         var direction = player.transform.position - transform.position;
         _IsPlayerNoticed = false; 
         if (Vector3.Angle(transform.forward, direction) < viewAngle)
@@ -60,18 +55,25 @@ public class EnemyAI : MonoBehaviour
     }
     private void PatrolUpdate()
     {
+
         if (!_IsPlayerNoticed)
         {
-            if (_navMeshAgent.remainingDistance <=_navMeshAgent.stoppingDistance )
+
+            if (_navMeshAgent.remainingDistance == 0)
 
             {
                 PickNewPatrolPoint();
             }
+
         }
+
     }  
+
+
     private void PickNewPatrolPoint()
     {
         _navMeshAgent.destination = patrolPoints[Random.Range(0, patrolPoints.Count)].position;
+
     }
     private void ChaseUpdate()
     {
@@ -80,4 +82,6 @@ public class EnemyAI : MonoBehaviour
             _navMeshAgent.destination = player.transform.position;
         }
     }
+
+
 }
